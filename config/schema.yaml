@@ -1,0 +1,25 @@
+fields:
+  id:
+    type: string
+  source:
+    type: string
+  title:
+    type: string
+  company:
+    type: string
+  location:
+    type: string
+  url:
+    type: string
+  description:
+    type: string
+  salary_min:
+    type: number
+  salary_max:
+    type: number
+  raw_salary:
+    type: string
+  posted_date:
+    type: string
+  scraped_at:
+    type: string

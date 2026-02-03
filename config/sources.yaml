@@ -1,0 +1,10 @@
+sources:
+  - name: demo_jobs
+    type: local_html
+    path: demo/sample.html
+    fields:
+      title: ".job-title"
+      company: ".company"
+      location: ".location"
+      description: ".description"
+      url: "a::attr(href)"
