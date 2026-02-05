@@ -5,8 +5,9 @@ A configurable data scraping and automation pipeline designed to collect, parse,
 ## Features
 
 - **Configurable Sources**: Define sources in `config/sources.yaml`.
-- **Multiple Inputs**: Supports local HTML files and remote URLs (e.g., Hacker News Jobs).
-- **Flexible Parsing**: Uses CSS selectors to extract data.
+- **Multiple Inputs**: Supports local HTML files, remote URLs, and JSON feeds (e.g., RemoteOK).
+- **Flexible Parsing**: Uses CSS selectors for HTML and key-value mapping for JSON.
+- **Custom Headers**: Configure User-Agent and other headers directly in YAML.
 - **Deduplication**: Automatically removes duplicate entries based on content hash.
 - **Multiple Outputs**: Export data to CSV or directly to Google Sheets.
 
@@ -22,7 +23,6 @@ A configurable data scraping and automation pipeline designed to collect, parse,
     ```bash
     pip install -r requirements.txt
     ```
-    *(Note: You may need to generate requirements.txt first: `pip freeze > requirements.txt`)*
 
 ## Usage
 
@@ -43,8 +43,9 @@ python runner.py --source 1 --gsheet "Target Sheet Name"
 
 ### Sources (`config/sources.yaml`)
 
-Define your scraping targets here.
+Define your scraping targets here. Supported types: `local_html`, `remote_html`, `remote_json`.
 
+#### Example: HTML Scraping (Hacker News)
 ```yaml
 - name: hacker_news_jobs
   type: remote_html
@@ -53,6 +54,20 @@ Define your scraping targets here.
   fields:
     title: ".titleline > a"
     url: ".titleline > a::attr(href)"
+```
+
+#### Example: JSON Feed (RemoteOK)
+```yaml
+- name: remoteok
+  type: remote_json
+  url: https://remoteok.com/remote-jobs.json
+  headers:
+    User-Agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) ..."
+  container: "none"
+  fields:
+    title: "position"
+    url: "url"
+    company: "company"
 ```
 
 ### Google Sheets Setup
