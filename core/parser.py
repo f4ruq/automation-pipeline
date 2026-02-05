@@ -1,6 +1,17 @@
 from bs4 import BeautifulSoup
 
 def parse(html, field_map, container_selector="div.job"):
+    if isinstance(html, list):
+        jobs = []
+        for entry in html:
+            # Skip legal/metadata entries that might not have required fields if needed
+            # But RemoteOK JSON is usually clean.
+            item = {}
+            for field, key in field_map.items():
+                item[field] = entry.get(key)
+            jobs.append(item)
+        return jobs
+
     soup = BeautifulSoup(html, "html.parser")
     jobs = []
 

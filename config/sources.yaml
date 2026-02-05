@@ -18,3 +18,12 @@ sources:
       title: ".titleline > a"
       url: ".titleline > a::attr(href)"
       company: ".sitebit .sitestr"
+  
+  - name: remoteok
+    type: remote_json
+    url: https://remoteok.com/remote-jobs.json
+    container: "none"
+    fields:
+      title: "position"
+      url: "url"
+      company: "company"
