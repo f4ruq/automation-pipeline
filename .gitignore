@@ -5,10 +5,11 @@ __pycache__/
 
 # Environments
 .env
-.venv
+.venv/
 env/
 venv/
-ENV/
+pipeline/
+pipeline/
 
 # OS
 .DS_Store
@@ -18,3 +19,4 @@ Thumbs.db
 logs/*.log
 demo/*.csv
 outputs/*.csv
+credentials/

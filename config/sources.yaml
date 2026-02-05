@@ -2,9 +2,19 @@ sources:
   - name: demo_jobs
     type: local_html
     path: demo/sample.html
+    container: "div.job"
     fields:
       title: ".job-title"
       company: ".company"
       location: ".location"
       description: ".description"
       url: "a::attr(href)"
+
+  - name: hacker_news_jobs
+    type: remote_html
+    url: https://news.ycombinator.com/jobs
+    container: "tr.athing"
+    fields:
+      title: ".titleline > a"
+      url: ".titleline > a::attr(href)"
+      company: ".sitebit .sitestr"

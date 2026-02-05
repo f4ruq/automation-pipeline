@@ -1,10 +1,10 @@
 from bs4 import BeautifulSoup
 
-def parse(html, field_map):
+def parse(html, field_map, container_selector="div.job"):
     soup = BeautifulSoup(html, "html.parser")
     jobs = []
 
-    containers = soup.find_all("div", class_="job")
+    containers = soup.select(container_selector)
 
     for c in containers:
         item = {}

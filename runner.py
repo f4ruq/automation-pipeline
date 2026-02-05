@@ -6,10 +6,11 @@ from core.parser import parse
 from core.normalizer import normalize
 from core.deduplicator import deduplicate
 from outputs.csv_output import write_csv
+from outputs.gsheet_output import write_gsheet
 from logs.logger import log
 
 
-def run(source_index=0, dry_run=False):
+def run(source_index=0, dry_run=False, gsheet_name=None):
     log("Pipeline started")
 
     with open("config/sources.yaml", "r", encoding="utf-8") as f:
@@ -27,7 +28,7 @@ def run(source_index=0, dry_run=False):
     log(f"Running source: {source['name']}")
 
     html = collect(source)
-    parsed = parse(html, source["fields"])
+    parsed = parse(html, source["fields"], source.get("container", "div.job"))
     normalized = normalize(parsed, source["name"])
     unique = deduplicate(normalized)
 
@@ -38,11 +39,15 @@ def run(source_index=0, dry_run=False):
         log("Dry-run completed")
         return
 
+    # CSV Output
     output_path = "demo/sample_output.csv"
     write_csv(unique, output_path)
-
     log(f"Output written to {output_path}")
-    print(f"[OK] {len(unique)} records written")
+    print(f"[OK] {len(unique)} records written to CSV")
+
+    # Google Sheets Output
+    if gsheet_name:
+        write_gsheet(unique, gsheet_name)
 
 
 def main():
@@ -60,11 +65,16 @@ def main():
         action="store_true",
         help="Run pipeline without writing output",
     )
+    parser.add_argument(
+        "--gsheet",
+        type=str,
+        help="Name of the Google Sheet to export data to",
+    )
 
     args = parser.parse_args()
 
     try:
-        run(source_index=args.source, dry_run=args.dry_run)
+        run(source_index=args.source, dry_run=args.dry_run, gsheet_name=args.gsheet)
     except Exception as e:
         log(str(e), level="ERROR")
         raise
