@@ -22,7 +22,7 @@ def process_source(source):
         return []
 
 
-def run(source_index=0, run_all=False, dry_run=False, gsheet_name=None):
+def run(source_index=0, run_all=False, dry_run=False, gsheet_name=None, keywords=None):
     log("Pipeline started")
 
     with open("config/sources.yaml", "r", encoding="utf-8") as f:
@@ -45,6 +45,21 @@ def run(source_index=0, run_all=False, dry_run=False, gsheet_name=None):
             all_items.extend(items)
         except IndexError:
             raise ValueError(f"Source index {source_index} out of range")
+
+    # Keyword Filtering
+    if keywords:
+        log(f"Filtering by keywords: {keywords}")
+        target_keywords = [k.strip().lower() for k in keywords.split(",")]
+        filtered_items = []
+        for item in all_items:
+            # Check filtering against title and company (if available)
+            # You can extend this to description if present
+            text_to_check = (str(item.get("title", "")) + " " + str(item.get("company", ""))).lower()
+            if any(k in text_to_check for k in target_keywords):
+                filtered_items.append(item)
+        
+        log(f"Filtered {len(all_items)} items down to {len(filtered_items)}")
+        all_items = filtered_items
 
     unique = deduplicate(all_items)
 
@@ -91,6 +106,11 @@ def main():
         type=str,
         help="Name of the Google Sheet to export data to",
     )
+    parser.add_argument(
+        "--keywords",
+        type=str,
+        help="Filter items by comma-separated keywords (e.g. 'python, senior')",
+    )
 
     args = parser.parse_args()
 
@@ -100,6 +120,7 @@ def main():
             run_all=args.all,
             dry_run=args.dry_run,
             gsheet_name=args.gsheet,
+            keywords=args.keywords,
         )
     except Exception as e:
         log(str(e), level="ERROR")

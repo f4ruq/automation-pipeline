@@ -45,6 +45,9 @@ python runner.py --source 1
 
 # Export to Google Sheets
 python runner.py --all --gsheet "Target Sheet Name"
+
+# Filter by keywords (comma-separated, case-insensitive)
+python runner.py --all --keywords "python, senior"
 ```
 
 ## Configuration
