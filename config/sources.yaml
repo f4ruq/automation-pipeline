@@ -29,3 +29,12 @@ sources:
       title: "position"
       url: "url"
       company: "company"
+
+  - name: weworkremotely
+    type: remote_html
+    url: https://weworkremotely.com/categories/remote-full-stack-programming-jobs.rss
+    container: "item"
+    fields:
+      title: "title"
+      url: "link"
+      company: "title"

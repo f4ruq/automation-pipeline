@@ -10,7 +10,19 @@ from outputs.gsheet_output import write_gsheet
 from logs.logger import log
 
 
-def run(source_index=0, dry_run=False, gsheet_name=None):
+def process_source(source):
+    log(f"Running source: {source['name']}")
+    try:
+        html = collect(source)
+        parsed = parse(html, source["fields"], source.get("container", "div.job"))
+        normalized = normalize(parsed, source["name"])
+        return normalized
+    except Exception as e:
+        log(f"Error processing source {source['name']}: {str(e)}", level="ERROR")
+        return []
+
+
+def run(source_index=0, run_all=False, dry_run=False, gsheet_name=None):
     log("Pipeline started")
 
     with open("config/sources.yaml", "r", encoding="utf-8") as f:
@@ -20,17 +32,21 @@ def run(source_index=0, dry_run=False, gsheet_name=None):
     if not sources:
         raise ValueError("No sources defined in sources.yaml")
 
-    try:
-        source = sources[source_index]
-    except IndexError:
-        raise ValueError(f"Source index {source_index} out of range")
+    all_items = []
 
-    log(f"Running source: {source['name']}")
+    if run_all:
+        for source in sources:
+            items = process_source(source)
+            all_items.extend(items)
+    else:
+        try:
+            source = sources[source_index]
+            items = process_source(source)
+            all_items.extend(items)
+        except IndexError:
+            raise ValueError(f"Source index {source_index} out of range")
 
-    html = collect(source)
-    parsed = parse(html, source["fields"], source.get("container", "div.job"))
-    normalized = normalize(parsed, source["name"])
-    unique = deduplicate(normalized)
+    unique = deduplicate(all_items)
 
     log(f"{len(unique)} records processed")
 
@@ -61,6 +77,11 @@ def main():
         help="Index of the source defined in sources.yaml",
     )
     parser.add_argument(
+        "--all",
+        action="store_true",
+        help="Run all configured sources",
+    )
+    parser.add_argument(
         "--dry-run",
         action="store_true",
         help="Run pipeline without writing output",
@@ -74,7 +95,12 @@ def main():
     args = parser.parse_args()
 
     try:
-        run(source_index=args.source, dry_run=args.dry_run, gsheet_name=args.gsheet)
+        run(
+            source_index=args.source,
+            run_all=args.all,
+            dry_run=args.dry_run,
+            gsheet_name=args.gsheet,
+        )
     except Exception as e:
         log(str(e), level="ERROR")
         raise
