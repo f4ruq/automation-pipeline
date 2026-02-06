@@ -48,6 +48,24 @@ python runner.py --all --gsheet "Target Sheet Name"
 
 # Filter by keywords (comma-separated, case-insensitive)
 python runner.py --all --keywords "python, senior"
+
+# Run the Dashboard (UI)
+streamlit run app.py
+```
+
+## Streamlit Dashboard
+
+The project includes a web-based dashboard for easier management.
+
+**Features:**
+- **Ineractive Configuration**: Select sources and set keywords via UI.
+- **Log Viewer**: View execution logs in real-time directly within the app.
+- **Data Preview**: View results in an interactive table.
+- **Export**: Download filtered results as CSV.
+
+To launch:
+```bash
+streamlit run app.py
 ```
 
 ## Configuration

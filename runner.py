@@ -68,7 +68,7 @@ def run(source_index=0, run_all=False, dry_run=False, gsheet_name=None, keywords
     if dry_run:
         print(f"[DRY-RUN] {len(unique)} records processed")
         log("Dry-run completed")
-        return
+        return unique
 
     # CSV Output
     output_path = "demo/sample_output.csv"
@@ -79,6 +79,8 @@ def run(source_index=0, run_all=False, dry_run=False, gsheet_name=None, keywords
     # Google Sheets Output
     if gsheet_name:
         write_gsheet(unique, gsheet_name)
+    
+    return unique
 
 
 def main():
