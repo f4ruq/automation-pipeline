@@ -11,6 +11,9 @@ A configurable data scraping and automation pipeline designed to collect, parse,
 - **Deduplication**: Automatically removes duplicate entries based on content hash.
 - **Multiple Outputs**: Export data to CSV or directly to Google Sheets.
 
+<img width="1060" height="604" alt="Ekran Resmi 2026-02-06 00 12 29" src="https://github.com/user-attachments/assets/72ed7045-11f6-4f37-a8c3-49c3b7abe148" />
+
+
 ## Installation
 
 1.  Clone the repository.
