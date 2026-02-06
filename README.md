@@ -34,6 +34,7 @@ Run the pipeline using `runner.py`:
 
 ```bash
 # Run the default source (index 0)
+# Note: Indices correspond to the order in config/sources.yaml (starting at 0)
 python runner.py
 
 # Run all sources simultaneously
@@ -87,6 +88,18 @@ Define your scraping targets here. Supported types: `local_html`, `remote_html`,
     title: "position"
     url: "url"
     company: "company"
+```
+
+#### Example: JSON Dict (Remotive)
+```yaml
+- name: remotive
+  type: remote_json
+  url: https://remotive.com/api/remote-jobs
+  container: "jobs"
+  fields:
+    title: "title"
+    url: "url"
+    company: "company_name"
 ```
 
 ### Google Sheets Setup

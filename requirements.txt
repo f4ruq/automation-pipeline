@@ -7,6 +7,7 @@ google-auth==2.48.0
 google-auth-oauthlib==1.2.4
 gspread==6.2.1
 idna==3.11
+lxml==6.0.2
 oauthlib==3.3.1
 pyasn1==0.6.2
 pyasn1_modules==0.4.2
@@ -18,4 +19,3 @@ rsa==4.9.1
 soupsieve==2.8.1
 typing_extensions==4.15.0
 urllib3==2.6.3
-lxml==5.1.0
