@@ -63,6 +63,10 @@ The project includes a web-based dashboard for easier management.
 - **Data Preview**: View results in an interactive table.
 - **Export**: Download filtered results as CSV.
 
+<img width="1444" height="839" alt="Ekran Resmi 2026-02-06 21 57 49" src="https://github.com/user-attachments/assets/e332a808-d2bf-4210-85ab-9caf63254943" />
+<img width="1455" height="843" alt="Ekran Resmi 2026-02-06 21 59 01" src="https://github.com/user-attachments/assets/72f36385-b61a-4cef-9e34-81fb2193af7f" />
+
+
 To launch:
 ```bash
 streamlit run app.py
