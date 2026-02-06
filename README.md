@@ -6,7 +6,8 @@ A configurable data scraping and automation pipeline designed to collect, parse,
 
 - **Configurable Sources**: Define sources in `config/sources.yaml`.
 - **Multiple Inputs**: Supports local HTML files, remote URLs, and JSON feeds (e.g., RemoteOK).
-- **Flexible Parsing**: Uses CSS selectors for HTML and key-value mapping for JSON.
+- **Multi-Source Scraping**: Scrape all configured sources simultaneously with `--all`.
+- **Flexible Parsing**: Uses CSS selectors for HTML, key-value mapping for JSON, and RSS feed support.
 - **Custom Headers**: Configure User-Agent and other headers directly in YAML.
 - **Deduplication**: Automatically removes duplicate entries based on content hash.
 - **Multiple Outputs**: Export data to CSV or directly to Google Sheets.
@@ -35,11 +36,14 @@ Run the pipeline using `runner.py`:
 # Run the default source (index 0)
 python runner.py
 
+# Run all sources simultaneously
+python runner.py --all
+
 # Run a specific source by index
 python runner.py --source 1
 
 # Export to Google Sheets
-python runner.py --source 1 --gsheet "Target Sheet Name"
+python runner.py --all --gsheet "Target Sheet Name"
 ```
 
 ## Configuration
@@ -57,6 +61,18 @@ Define your scraping targets here. Supported types: `local_html`, `remote_html`,
   fields:
     title: ".titleline > a"
     url: ".titleline > a::attr(href)"
+```
+
+#### Example: RSS Feed (WeWorkRemotely)
+```yaml
+- name: weworkremotely
+  type: remote_html
+  url: https://weworkremotely.com/categories/remote-full-stack-programming-jobs.rss
+  container: "item"
+  fields:
+    title: "title"
+    url: "link"
+    company: "title"
 ```
 
 #### Example: JSON Feed (RemoteOK)
